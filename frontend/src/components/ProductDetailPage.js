@@ -34,7 +34,7 @@ const ProductDetailPage = () => {
       try {
         const userToken = localStorage.getItem("token"); // Get token from localStorage
         const response = await axios.get(
-          `http://localhost:5000/api/v1/cars/${id}`,
+          `https://car-management-1-w5ka.onrender.com/api/v1/cars/${id}`,
           {
             headers: {
               authorization: `Bearer ${userToken}`,
@@ -72,7 +72,7 @@ const ProductDetailPage = () => {
 
       // Send updated product data to the API
       const response = await axios.patch(
-        `http://localhost:5000/api/v1/cars/${id}`,
+        `https://car-management-1-w5ka.onrender.com/api/v1/cars/${id}`,
         values,
         {
           headers: {
@@ -94,12 +94,15 @@ const ProductDetailPage = () => {
   const handleDelete = async () => {
     try {
       const userToken = localStorage.getItem("token"); // Get token from localStorage
-      await axios.delete(`http://localhost:5000/api/v1/cars/${id}`, {
-        headers: {
-          authorization: `Bearer ${userToken}`,
-          "Content-Type": "application/json",
-        },
-      });
+      await axios.delete(
+        `https://car-management-1-w5ka.onrender.com/api/v1/cars/${id}`,
+        {
+          headers: {
+            authorization: `Bearer ${userToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
       message.success("Product deleted successfully.");
       navigate("/products"); // Redirect to the product list after deletion
     } catch (error) {

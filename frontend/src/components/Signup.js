@@ -44,7 +44,7 @@ export default function Signup() {
     if (Object.keys(errors).length === 0) {
       try {
         const response = await axios.post(
-          "http://localhost:5000/api/v1/auth/register",
+          "https://car-management-1-w5ka.onrender.com/api/v1/auth/register",
           formValues
         );
         console.log(response.data);

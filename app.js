@@ -4,7 +4,7 @@ require("dotenv").config();
 const cors = require("cors");
 app.use(
   cors({
-    origin: "http://localhost:3000", // Replace with your frontend URL
+    origin: "https://gilded-mermaid-9c812a.netlify.app/", // Replace with your frontend URL
     allowedHeaders: ["Content-Type", "Authorization"], // Allow Authorization header
   })
 );
