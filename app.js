@@ -4,7 +4,7 @@ require("dotenv").config();
 const cors = require("cors");
 app.use(
   cors({
-    origin: "https://inquisitive-pastelito-e3b135.netlify.app/", // Replace with your frontend URL
+    origin: "https://inquisitive-pastelito-e3b135.netlify.app", // Replace with your frontend URL
     allowedHeaders: ["Content-Type", "Authorization"], // Allow Authorization header
   })
 );
