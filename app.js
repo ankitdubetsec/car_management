@@ -2,10 +2,21 @@ const express = require("express");
 const app = express();
 require("dotenv").config();
 const cors = require("cors");
+const allowedOrigins = [
+  "https://inquisitive-pastelito-e3b135.netlify.app",
+  "https://another-frontend-url.com",
+];
+
 app.use(
   cors({
-    origin: "https://inquisitive-pastelito-e3b135.netlify.app", // Replace with your frontend URL
-    allowedHeaders: ["Content-Type", "Authorization"], // Allow Authorization header
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
