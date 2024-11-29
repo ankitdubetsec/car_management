@@ -62,7 +62,7 @@ const ProductCreationPage = () => {
     try {
       const userToken = localStorage.getItem("token");
       const response = await axios.post(
-        "http://localhost:5000/api/v1/cars",
+        "https://car-management-1-w5ka.onrender.com/api/v1/cars",
         formData,
         {
           headers: {
