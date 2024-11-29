@@ -6,6 +6,7 @@ const { canViewCar } = require("./permissions/car");
 const allowedOrigins = [
   "https://inquisitive-pastelito-e3b135.netlify.app",
   "http://localhost:3000",
+  "https://neon-kringle-c37282.netlify.app",
 ];
 
 app.use(
@@ -32,14 +33,6 @@ const connectDb = require("./database/connect");
 app.use("/api/v1/auth", authRouters);
 app.use("/api/v1/cars", Authentication, carRouters);
 
-function authGetCar(req, res, next) {
-  if (!canViewProject(req.user, req.project)) {
-    res.status(401);
-    return res.send("Not Allowed");
-  }
-
-  next();
-}
 const start = async () => {
   try {
     //console.log(process.env.MONGO_URI);
