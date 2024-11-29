@@ -15,15 +15,12 @@ const ProductListPage = () => {
     const fetchCars = async () => {
       try {
         const userToken = localStorage.getItem("token");
-        const response = await axios.get(
-          "https://car-management-1-w5ka.onrender.com/api/v1/cars",
-          {
-            headers: {
-              authorization: `Bearer ${userToken}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        const response = await axios.get("http://localhost:5000/api/v1/cars", {
+          headers: {
+            authorization: `Bearer ${userToken}`,
+            "Content-Type": "application/json",
+          },
+        });
         setCars(response.data.cars);
       } catch (error) {
         console.log(error);

@@ -42,13 +42,14 @@ export default function Login() {
     //console.log(formErrors);
     if (Object.keys(errors).length == 0) {
       const response = await axios.post(
-        "https://car-management-1-w5ka.onrender.com/api/v1/auth/login",
+        "http://localhost:5000/api/v1/auth/login",
         formValues
       );
       //console.log(response.data);
       const userData = response.data;
       if (userData.name && userData.token) {
         localStorage.setItem("token", userData.token);
+        console.log(userData.token);
         navigate("/products");
       } else {
         console.log("user data and token not found");

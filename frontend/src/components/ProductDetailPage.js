@@ -18,6 +18,7 @@ import {
   ArrowLeftOutlined,
 } from "@ant-design/icons";
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
 const { Title, Paragraph } = Typography;
 
@@ -28,13 +29,31 @@ const ProductDetailPage = () => {
   const [editing, setEditing] = useState(false); // State to toggle edit mode
   const [form] = Form.useForm(); // Form instance
 
+  const [userRole, setUserRole] = useState("");
+
+  // Decode user role from token
+  useEffect(() => {
+    const userToken = localStorage.getItem("token");
+    if (userToken) {
+      try {
+        const decodedToken = jwtDecode(userToken);
+        setUserRole(decodedToken.role); // Assuming the token contains the role
+      } catch (error) {
+        console.error("Failed to decode token", error);
+        message.error("Invalid or expired token. Please log in again.");
+      }
+    } else {
+      message.error("No token found. Please log in.");
+    }
+  }, []);
+
   useEffect(() => {
     // Fetch product data from the API
     const fetchProductDetails = async () => {
       try {
         const userToken = localStorage.getItem("token"); // Get token from localStorage
         const response = await axios.get(
-          `https://car-management-1-w5ka.onrender.com/api/v1/cars/${id}`,
+          `http://localhost:5000/api/v1/cars/${id}`,
           {
             headers: {
               authorization: `Bearer ${userToken}`,
@@ -72,7 +91,7 @@ const ProductDetailPage = () => {
 
       // Send updated product data to the API
       const response = await axios.patch(
-        `https://car-management-1-w5ka.onrender.com/api/v1/cars/${id}`,
+        `http://localhost:5000/api/v1/cars/${id}`,
         values,
         {
           headers: {
@@ -94,15 +113,12 @@ const ProductDetailPage = () => {
   const handleDelete = async () => {
     try {
       const userToken = localStorage.getItem("token"); // Get token from localStorage
-      await axios.delete(
-        `https://car-management-1-w5ka.onrender.com/api/v1/cars/${id}`,
-        {
-          headers: {
-            authorization: `Bearer ${userToken}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      await axios.delete(`http://localhost:5000/api/v1/cars/${id}`, {
+        headers: {
+          authorization: `Bearer ${userToken}`,
+          "Content-Type": "application/json",
+        },
+      });
       message.success("Product deleted successfully.");
       navigate("/products"); // Redirect to the product list after deletion
     } catch (error) {
@@ -204,25 +220,27 @@ const ProductDetailPage = () => {
                 ))}
               </Space>
             </div>
-            <Space style={{ marginTop: "20px" }}>
-              <Button
-                type="primary"
-                icon={<EditOutlined />}
-                onClick={handleEdit}
-              >
-                Edit
-              </Button>
-              <Popconfirm
-                title="Are you sure to delete this product?"
-                onConfirm={handleDelete}
-                okText="Yes"
-                cancelText="No"
-              >
-                <Button type="danger" icon={<DeleteOutlined />}>
-                  Delete
+            {userRole !== "viewer" && (
+              <Space style={{ marginTop: "20px" }}>
+                <Button
+                  type="primary"
+                  icon={<EditOutlined />}
+                  onClick={handleEdit}
+                >
+                  Edit
                 </Button>
-              </Popconfirm>
-            </Space>
+                <Popconfirm
+                  title="Are you sure to delete this product?"
+                  onConfirm={handleDelete}
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  <Button type="danger" icon={<DeleteOutlined />}>
+                    Delete
+                  </Button>
+                </Popconfirm>
+              </Space>
+            )}
           </>
         )}
       </Card>

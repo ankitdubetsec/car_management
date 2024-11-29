@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Form,
   Input,
@@ -11,6 +11,7 @@ import {
 } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -18,6 +19,24 @@ const { Option } = Select;
 const ProductCreationPage = () => {
   const [form] = Form.useForm();
   const [images, setImages] = useState([]);
+
+  const [userRole, setUserRole] = useState("");
+
+  // Decode user role from token
+  useEffect(() => {
+    const userToken = localStorage.getItem("token");
+    if (userToken) {
+      try {
+        const decodedToken = jwtDecode(userToken);
+        setUserRole(decodedToken.role); // Assuming the token contains the role
+      } catch (error) {
+        console.error("Failed to decode token", error);
+        message.error("Invalid or expired token. Please log in again.");
+      }
+    } else {
+      message.error("No token found. Please log in.");
+    }
+  }, []);
 
   const handleImageChange = ({ fileList }) => {
     if (fileList.length > 10) {
@@ -43,7 +62,7 @@ const ProductCreationPage = () => {
     try {
       const userToken = localStorage.getItem("token");
       const response = await axios.post(
-        "https://car-management-1-w5ka.onrender.com/api/v1/cars",
+        "http://localhost:5000/api/v1/cars",
         formData,
         {
           headers: {
@@ -56,10 +75,26 @@ const ProductCreationPage = () => {
       form.resetFields();
       setImages([]);
     } catch (error) {
-      message.error("Failed to add car. Please try again.");
-      console.error(error);
+      message.error(error.response.data.message);
+      console.error(error.response.data.message);
     }
   };
+
+  if (userRole === "viewer") {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          backgroundColor: "#f7f7f7",
+        }}
+      >
+        <h1>New car can only be added by managers and admin</h1>
+      </div>
+    );
+  }
 
   return (
     <div

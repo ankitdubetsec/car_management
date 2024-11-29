@@ -2,9 +2,10 @@ const express = require("express");
 const app = express();
 require("dotenv").config();
 const cors = require("cors");
+const { canViewCar } = require("./permissions/car");
 const allowedOrigins = [
   "https://inquisitive-pastelito-e3b135.netlify.app",
-  "https://another-frontend-url.com",
+  "http://localhost:3000",
 ];
 
 app.use(
@@ -30,6 +31,15 @@ const connectDb = require("./database/connect");
 //routes
 app.use("/api/v1/auth", authRouters);
 app.use("/api/v1/cars", Authentication, carRouters);
+
+function authGetCar(req, res, next) {
+  if (!canViewProject(req.user, req.project)) {
+    res.status(401);
+    return res.send("Not Allowed");
+  }
+
+  next();
+}
 const start = async () => {
   try {
     //console.log(process.env.MONGO_URI);
