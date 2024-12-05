@@ -22,6 +22,7 @@ POSTMAN API DOCS : https://documenter.getpostman.com/view/30230934/2sAYBSiYFy
 Admin details: 
 Email:admin2@gmail.com 
 Password: 12345678 
+
 Manager: 
 manager@gmail.com 
 12345678
