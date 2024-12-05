@@ -14,8 +14,11 @@ Roles:
 * viewer or customer=> Has only view access of all products , Cannot create , update or delete products
 
 DEPLOYED LINK: https://neon-kringle-c37282.netlify.app/ 
+
 BACKEND DEPLOYED KINK: https://car-management-1-w5ka.onrender.com 
+
 POSTMAN API DOCS : https://documenter.getpostman.com/view/30230934/2sAYBSiYFy 
+
 Admin details: 
 Email:admin2@gmail.com 
 Password: 12345678 
