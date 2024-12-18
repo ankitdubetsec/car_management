@@ -24,10 +24,12 @@ const register = async (req, res) => {
   res.status(StatusCodes.CREATED).json({ name: user.name, token });
 };
 
-const login = async (req, res) => {
+const login = async (req, res, next) => {
   const { email, password } = req.body;
   if (!email || !password) {
     throw new badRequest("please provide valid email and password");
+
+    //return next(new badRequest("please provide valid email and password"));
   }
   const user = await User.findOne({ email });
   if (!user) {

@@ -1,8 +1,11 @@
 const express = require("express");
 const app = express();
+require("express-async-errors");
+
 require("dotenv").config();
 const cors = require("cors");
 const { canViewCar } = require("./permissions/car");
+const errorHandler = require("./middleware/errorHandler");
 const allowedOrigins = [
   "https://inquisitive-pastelito-e3b135.netlify.app",
   "http://localhost:3000",
@@ -32,6 +35,8 @@ const connectDb = require("./database/connect");
 //routes
 app.use("/api/v1/auth", authRouters);
 app.use("/api/v1/cars", Authentication, carRouters);
+
+app.use(errorHandler);
 
 const start = async () => {
   try {
